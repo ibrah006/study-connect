@@ -5,10 +5,11 @@ import { Event } from '../../types';
 interface EventCardProps {
   event: Event;
   onRSVP: (eventId: string, status: 'going' | 'interested' | 'not-going') => void;
+  onViewDetails: (event: Event) => void;
   userRSVPStatus?: 'going' | 'interested' | 'not-going' | null;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event, onRSVP, userRSVPStatus = null }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, onRSVP, onViewDetails, userRSVPStatus = null }) => {
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
       'academic': 'bg-blue-100 text-blue-800',
@@ -79,7 +80,15 @@ const EventCard: React.FC<EventCardProps> = ({ event, onRSVP, userRSVPStatus = n
         </div>
       </div>
 
-      <p className="text-gray-700 text-sm mb-4 line-clamp-3">{event.description}</p>
+      <p className="text-gray-700 text-sm mb-4 line-clamp-2">{event.description}</p>
+      
+      <button
+        onClick={() => onViewDetails(event)}
+        className="text-blue-600 hover:text-blue-800 text-sm font-medium mb-4 inline-flex items-center"
+      >
+        View Details
+        <ExternalLink className="w-3 h-3 ml-1" />
+      </button>
 
       {event.club && (
         <div className="mb-4 p-3 bg-gray-50 rounded-md">
@@ -156,19 +165,6 @@ const EventCard: React.FC<EventCardProps> = ({ event, onRSVP, userRSVPStatus = n
         )}
       </div>
 
-      {event.isVirtual && event.meetingLink && userRSVPStatus === 'going' && (
-        <div className="mt-4 p-3 bg-blue-50 rounded-md">
-          <a
-            href={event.meetingLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
-          >
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Join Virtual Event
-          </a>
-        </div>
-      )}
     </div>
   );
 };

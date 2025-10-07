@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Calendar, Plus, Clock } from 'lucide-react';
 import { Event, Club } from '../../types';
 import EventCard from './EventCard';
+import CreateEventModal, { EventFormData } from './CreateEventModal';
+import EventDetailsModal from './EventDetailsModal';
 import { useAuth } from '../../contexts/AuthContext';
 
 const EventsPage: React.FC = () => {
@@ -14,8 +16,11 @@ const EventsPage: React.FC = () => {
     isVirtual: '',
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'upcoming' | 'my-events'>('upcoming');
   const [userRSVPs, setUserRSVPs] = useState<Map<string, 'going' | 'interested' | 'not-going'>>(new Map());
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const { user } = useAuth();
 
   // Mock data - replace with actual API calls
@@ -232,6 +237,25 @@ const EventsPage: React.FC = () => {
     }));
   };
 
+  const handleCreateEvent = (eventData: EventFormData) => {
+    const newEvent: Event = {
+      id: Date.now().toString(),
+      ...eventData,
+      organizerId: user?.id || '1',
+      currentAttendees: 0,
+      createdAt: new Date().toISOString(),
+      tags: eventData.tags || [],
+    };
+    
+    setEvents([newEvent, ...events]);
+    setShowCreateModal(false);
+  };
+
+  const handleViewDetails = (event: Event) => {
+    setSelectedEvent(event);
+    setShowDetailsModal(true);
+  };
+
   const categories = [...new Set(events.map(event => event.category))];
   const upcomingEvents = events.filter(event => new Date(event.date) >= new Date());
   const myEvents = events.filter(event => userRSVPs.has(event.id) && userRSVPs.get(event.id) !== 'not-going');
@@ -243,7 +267,10 @@ const EventsPage: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Campus Events</h1>
           <p className="text-gray-600">Discover and attend events happening on campus</p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
           <Plus className="w-4 h-4 mr-2" />
           Create Event
         </button>
@@ -399,11 +426,26 @@ const EventsPage: React.FC = () => {
               key={event.id}
               event={event}
               onRSVP={handleRSVP}
+              onViewDetails={handleViewDetails}
               userRSVPStatus={userRSVPs.get(event.id) || null}
             />
           ))}
         </div>
       )}
+
+      <CreateEventModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSubmit={handleCreateEvent}
+      />
+
+      <EventDetailsModal
+        event={selectedEvent}
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        onRSVP={handleRSVP}
+        userRSVPStatus={selectedEvent ? userRSVPs.get(selectedEvent.id) || null : null}
+      />
     </div>
   );
 };
