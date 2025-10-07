@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Search, MessageCircle, Users, Briefcase, LogOut } from 'lucide-react';
+import { User, Search, MessageCircle, Users, Briefcase, LogOut, Calendar } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface HeaderProps {
@@ -14,6 +14,8 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
     { id: 'discover', label: 'Discover', icon: Search },
     { id: 'connections', label: 'Connections', icon: Users },
     { id: 'groups', label: 'Study Groups', icon: Users },
+    { id: 'clubs', label: 'Clubs', icon: Users },
+    { id: 'events', label: 'Events', icon: Calendar },
     { id: 'careers', label: 'Careers', icon: Briefcase },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
   ];

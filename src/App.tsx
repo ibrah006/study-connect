@@ -8,6 +8,8 @@ import ConnectionsPage from './components/Connections/ConnectionsPage';
 import StudyGroupsPage from './components/StudyGroups/StudyGroupsPage';
 import CareersPage from './components/Careers/CareersPage';
 import MessagesPage from './components/Messages/MessagesPage';
+import ClubsPage from './components/Clubs/ClubsPage';
+import EventsPage from './components/Events/EventsPage';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -38,6 +40,10 @@ const AppContent: React.FC = () => {
         return <ConnectionsPage />;
       case 'groups':
         return <StudyGroupsPage />;
+      case 'clubs':
+        return <ClubsPage />;
+      case 'events':
+        return <EventsPage />;
       case 'careers':
         return <CareersPage />;
       case 'messages':

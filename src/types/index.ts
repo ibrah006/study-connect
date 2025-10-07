@@ -71,3 +71,61 @@ export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
 }
+
+export interface Club {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  university: string;
+  memberCount: number;
+  isActive: boolean;
+  tags: string[];
+  meetingSchedule: string;
+  contactEmail: string;
+  clubImage?: string;
+  createdAt: string;
+  president?: User;
+  members?: ClubMember[];
+}
+
+export interface ClubMember {
+  id: string;
+  userId: string;
+  clubId: string;
+  role: 'president' | 'officer' | 'member';
+  joinedAt: string;
+  user?: User;
+}
+
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  category: 'academic' | 'social' | 'career' | 'sports' | 'cultural' | 'volunteer';
+  date: string;
+  time: string;
+  location: string;
+  university: string;
+  organizerId: string;
+  clubId?: string;
+  maxAttendees?: number;
+  currentAttendees: number;
+  isVirtual: boolean;
+  meetingLink?: string;
+  tags: string[];
+  eventImage?: string;
+  createdAt: string;
+  organizer?: User;
+  club?: Club;
+  attendees?: EventAttendee[];
+}
+
+export interface EventAttendee {
+  id: string;
+  userId: string;
+  eventId: string;
+  status: 'going' | 'interested' | 'not-going';
+  rsvpAt: string;
+  user?: User;
+}
