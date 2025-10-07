@@ -10,11 +10,12 @@ import CareersPage from './components/Careers/CareersPage';
 import MessagesPage from './components/Messages/MessagesPage';
 import ClubsPage from './components/Clubs/ClubsPage';
 import EventsPage from './components/Events/EventsPage';
+import DashboardPage from './components/Dashboard/DashboardPage';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [activeTab, setActiveTab] = useState('discover');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   if (isLoading) {
     return (
@@ -34,6 +35,8 @@ const AppContent: React.FC = () => {
 
   const renderActiveTab = () => {
     switch (activeTab) {
+      case 'dashboard':
+        return <DashboardPage onNavigate={setActiveTab} />;
       case 'discover':
         return <DiscoverPage />;
       case 'connections':

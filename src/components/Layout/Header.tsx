@@ -11,6 +11,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
   const { user, logout } = useAuth();
 
   const navItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: Users },
     { id: 'discover', label: 'Discover', icon: Search },
     { id: 'connections', label: 'Connections', icon: Users },
     { id: 'groups', label: 'Study Groups', icon: Users },
