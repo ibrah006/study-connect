@@ -36,7 +36,7 @@ const AppContent: React.FC = () => {
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <DashboarxdPage onNavigate={setActiveTab} />;
+        return <DashboardPage onNavigate={setActiveTab} />;
       case 'discover':
         return <DiscoverPage />;
       case 'connections':
