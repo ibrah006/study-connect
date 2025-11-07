@@ -9,7 +9,56 @@
   <body>
 
     <!-- QardHasana widget snippet -->
-    <script src="https://qardhasana.com/_api/widget?hostIdentifier=test-host&assetId=2"></script>
+    <!-- <script src="https://qardhasana.com/_api/widget?hostIdentifier=test-host&assetId=2"></script> -->
+
+    <script>
+      // You can use an immediately-invoked async function
+      (async () => {
+        const apiUrl = 'https://qardhasana.com/_api/payments/widget-intent';
+  
+        console.log("attempting to POST widget intent");
+  
+        // Example contribution data
+        const contributionData = {
+          assetId: "12345",
+          amount: "50.00",
+          type: "donation",
+          name: "John Doe",
+          repaymentMonths: 12
+        };
+  
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              assetId: contributionData.assetId,
+              amount: parseFloat(contributionData.amount),
+              type: contributionData.type,
+              donorName: contributionData.name,
+              repaymentMonths: contributionData.repaymentMonths,
+            }),
+          });
+  
+          // Check if request succeeded
+          if (!response.ok) {
+            console.error("HTTP error:", response.status, response.statusText);
+            const errorText = await response.text();
+            console.log("Error response body:", errorText);
+            return;
+          }
+  
+          // Parse and log JSON response
+          const data = await response.json();
+          console.log("Success:", data);
+  
+        } catch (e) {
+          console.error("Actual error:", e);
+        }
+      })();
+    </script>
     
     
     <div id="root"></div>
